@@ -11,12 +11,12 @@ library(dplyr)
 #XGBOOST
 ##############
 setwd(paste0(getwd(),"/data/lucas_data"))
-
+system("ls")
 
 ###############
 #Importing Data
 ###############
-data_tbl <- read.csv("full_Clinical_Data_Patient_Level-TCells.csv", header = T)
+data_tbl <- read.csv("only_complete_Clinical_Data_Patient_Level-TCells.csv", header = T)
 # Just the complete data
 head(data_tbl)
 names(data_tbl)
@@ -29,10 +29,11 @@ for (i in 1:ncol(data_tbl)) {
     data_tbl[,i] <- as.numeric(data_tbl[,i])
   }
 }
-
+head(data_tbl)
+names(data_tbl)
 
 #Modeling
-fit_xgboost <- boost_tree(learn_rate = 0.3) %>%
+fit_xgboost <- boost_tree(learn_rate = 0.3, trees = 10) %>%
   set_mode("regression") %>%
   set_engine("xgboost") %>%
   fit(BestDiseaseResponse ~. , data = data_tbl)
@@ -50,3 +51,4 @@ explainer <- DALEX::explain(
 
 # MODEL STUDIO visualization
 modelStudio::modelStudio(explainer)
+
