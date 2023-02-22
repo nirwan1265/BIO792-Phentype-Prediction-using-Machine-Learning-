@@ -1,3 +1,4 @@
+# Library packages
 library(pls)
 library(caret)
 library(pcaL1)
@@ -9,15 +10,14 @@ library(tidyverse)
 library(tidymodels)
 library(xgboost)
 
+# Setting working directory for data
 setwd("./data/nirwan_data")
-
 
 # Phenotype data
 pheno <- read.csv("Sorghum_allphospho_africa.csv")
 
 # Loading PCA file
 GPCA <- readRDS("pca_sorghum.RDS")
-
 
 #Make a table of eigen values
 j <- 1
@@ -59,8 +59,11 @@ for(i in paste0("GPCA")){
 pc.percent <- GPCA$varprop*100
 pc.percent[1:25]
 round(pc.percent)[1:25]
+
+
 # Top 13 EV explains atleast some variance of the Genotype
 EV01 <- EV01[,-c(1,14:26)]
+EV01 <- EV01[,2]
 
 
 # Giving weights to the Eigen Vector:
@@ -70,7 +73,7 @@ W = matrix(c(2,2,1,1,1,1,1,1,1,1,1,1), ncol = 1)
 #Combining Eigen Vector with weight 
 composite_pca <- as.matrix(EV01)
 composite_pca <- as.data.frame(rowSums(as.matrix(composite_pca) %*% W))
-
+head(composite_pca)
 
 
 ##############
@@ -88,6 +91,11 @@ imp_df$pheno <- rownames(imp)
 imp_sorted <- imp_df[order(-imp_df$Overall),]
 rownames(imp_sorted) <- NULL
 imp_sorted$pheno <- sapply(strsplit(imp_sorted$pheno, ")"), "[",2)
+imp_sorted
+
+
+
+
 
 
 ##############
