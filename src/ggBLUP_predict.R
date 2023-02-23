@@ -25,7 +25,7 @@ hist(sol_VL[,1])
 tot_gwas <- vroom("tot_LMM.txt") %>% select(rs,p_wald) %>% filter(p_wald <= 0.05)
 lab_gwas <- vroom("lab_LMM.txt") %>% select(rs,p_wald) %>% filter(p_wald <= 0.05)
 sol_VL_gwas <- vroom("sol_VL_LMM.txt") %>% select(rs,p_wald) %>% filter(p_wald <= 0.05)
-
+tot_gwas_trial <- vroom("tot_LMM.txt") %>% select(rs,p_wald)
 
 # Loading the genotype file (MAF)
 setwd("/Users/nirwantandukar/Library/Mobile Documents/com~apple~CloudDocs/Research/Data/Lasky.hapmap/raw/africa.filtered/imputed/")
