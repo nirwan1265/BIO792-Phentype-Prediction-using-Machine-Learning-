@@ -5,7 +5,7 @@ library(rrBLUP)
 
 # Change working directory
 setwd("./data/nirwan_data/")
-
+setwd("/Users/nirwantandukar/Library/Mobile Documents/com~apple~CloudDocs/Github/BIO792-Phentype-Prediction-using-Machine-Learning-/data/nirwan_data")
 # Phenotypes
 phenotypes <- read.csv("Sorghum_allphospho_africa.csv")
 # Total phosphorus
@@ -28,20 +28,28 @@ sol_VL_gwas <- vroom("sol_VL_LMM.txt") %>% select(rs,p_wald) %>% filter(p_wald <
 
 
 # Loading the genotype file (MAF)
-setwd("/Users/nirwan/Library/Mobile Documents/com~apple~CloudDocs/Research/Data/Lasky.hapmap/raw/africa.filtered/")
+setwd("/Users/nirwantandukar/Library/Mobile Documents/com~apple~CloudDocs/Research/Data/Lasky.hapmap/raw/africa.filtered/imputed/")
+#Imputed using LDKiNN
+SNP_markers <- vroom("allchrom.impute.MAF.txt")
+#SNP_markers[1:100,1:100]
 #SNP_markers <- vroom("allchrom_africa_filtered.MAF.txt")
 #saveRDS(SNP_markers,"SNP_markers.RDS")
-SNP_markers <- readRDS("SNP_markers.RDS")
+#SNP_markers <- readRDS("SNP_markers.RDS")
 
 # Getting the significant markers
 tot_gwas_markers <- unlist(as.vector(tot_gwas[,1]))
 lab_gwas_markers <- unlist(as.vector(lab_gwas[,1]))
 sol_VL_gwas_markers <- unlist(as.vector(sol_VL_gwas[,1]))
 
-# Subsetting markers
+# Subsetting markers - replacing -9 with 0
 tot_markers <- SNP_markers[tot_gwas_markers]
+tot_markers <- replace(tot_markers, tot_markers == -9,0)
+
 lab_markers <- SNP_markers[lab_gwas_markers]
+lab_markers <- replace(lab_markers, lab_markers == -9,0)
+
 sol_VL_markers <- SNP_markers[sol_VL_gwas_markers]
+sol_VL_markers <- replace(sol_VL_markers, sol_VL_markers == -9,0)
 
 # Subsetting Testing and Training data for markers
 set.seed(123)
@@ -120,16 +128,22 @@ corr_tot_test <- cor(as.vector(tot_test_phenotype), predict_test_result_tot, use
 corr_lab_train <- cor.test(as.vector(lab_train_phenotype), predict_train_result_lab, use = "spearman")
 corr_lab_test <- cor(as.vector(lab_test_phenotype), predict_test_result_lab, use = "complete")
 
-corr_tot_train <- cor.test(as.vector(tot_train_phenotype), predict_train_result_tot, use = "spearman")
-corr_tot_test <- cor(as.vector(tot_test_phenotype), predict_test_result_tot, use = "complete")
+corr_sol_VL_train <- cor.test(as.vector(sol_VL_train_phenotype), predict_train_result_sol_VL, use = "spearman")
+corr_sol_VL_test <- cor(as.vector(sol_VL_test_phenotype), predict_test_result_sol_VL, use = "complete")
 
 
 # Visualize
 plot(tot_test_phenotype, predict_test_result_tot)
+abline(lm(tot_test_phenotype~predict_test_result_tot), col = "red")
+
 plot(lab_test_phenotype, predict_test_result_lab)
 plot(sol_VL_test_phenotype, predict_test_result_sol_VL)
+abline(lm(sol_VL_test_phenotype~ predict_test_result_sol_VL), col = "red")
 
 # Visualizing side by side
 tot_train_test <- cbind(tot_test_phenotype, predict_test_result_tot)
 lab_train_test <- cbind(lab_test_phenotype, predict_test_result_lab)
 sol_VL_train_test <- cbind(sol_VL_test_phenotype, predict_test_result_sol_VL)
+
+
+
