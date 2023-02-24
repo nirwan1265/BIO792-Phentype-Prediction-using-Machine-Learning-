@@ -139,7 +139,7 @@ tot_train_test <- cbind(tot_test_phenotype, predict_test_result_tot)
 lab_train_test <- cbind(lab_test_phenotype, predict_test_result_lab)
 sol_VL_train_test <- cbind(sol_VL_test_phenotype, predict_test_result_sol_VL)
 
-x <- cbind(sol_VL_train_test,sol_VL_train_test_CNN)
+x <- cbind(sol_VL_train_test,sol_VL_train_test_DNN)
 x <- x[,-3]
 colnames(x) <- c("soilP","rrBLUP","CNN")
 x <- as.data.frame(x)

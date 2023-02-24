@@ -57,7 +57,6 @@ sol_VL_train_test_CNN <- cbind(sol_VL_test_phenotype, test_predicted)
 
 # lab
 
-
 CNN_lab <- CNN_func(lab_train_phenotype, lab_train_marker, lab_test_marker)
 
 test_predicted <- CNN_lab$val_predicted
