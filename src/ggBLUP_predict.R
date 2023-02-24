@@ -1,10 +1,4 @@
-#Library
-library(vroom)
-library(dplyr)
-library(rrBLUP)
-
 # Change working directory
-setwd("./data/nirwan_data/")
 setwd("/Users/nirwantandukar/Library/Mobile Documents/com~apple~CloudDocs/Github/BIO792-Phentype-Prediction-using-Machine-Learning-/data/nirwan_data")
 # Phenotypes
 phenotypes <- read.csv("Sorghum_allphospho_africa.csv")
@@ -28,7 +22,7 @@ sol_VL_gwas <- vroom("sol_VL_LMM.txt") %>% select(rs,p_wald) %>% filter(p_wald <
 tot_gwas_trial <- vroom("tot_LMM.txt") %>% select(rs,p_wald)
 
 # Loading the genotype file (MAF)
-setwd("/Users/nirwantandukar/Library/Mobile Documents/com~apple~CloudDocs/Research/Data/Lasky.hapmap/raw/africa.filtered/imputed/")
+setwd("/Users/nirwantandukar/Library/Mobile Documents/com~apple~CloudDocs/Research/Data/Lasky.hapmap/raw/africa.filtered/v1/imputed/")
 #Imputed using LDKiNN
 SNP_markers <- vroom("allchrom.impute.MAF.txt")
 #SNP_markers[1:100,1:100]
