@@ -31,7 +31,7 @@ CNN_func = function (train_pheno, train_geno, test_geno) {
   set.seed(200)
   tensorflow::tf$random$set_seed(200)
   history <- model %>%
-    fit(train_geno_mnum, train_pheno, epochs = 100, batch_size = batchs, validation_split = 0.2, verbose = 0,
+    fit(train_geno_mnum, train_pheno, epochs = 500, batch_size = batchs, validation_split = 0.2, verbose = 0,
         callbacks = list(callback_early_stopping(patience = 30), callback_reduce_lr_on_plateau(factor = 0.1)))
   train_pred <- model %>% predict(train_geno_mnum, batch_size = batchs)
   val_pred <- model %>% predict(test_geno_mnum, batch_size = batchs)
@@ -39,13 +39,43 @@ CNN_func = function (train_pheno, train_geno, test_geno) {
   return(return_value)
 }
 
+# sol_VL
 CNN_sol_VL <- CNN_func(sol_VL_train_phenotype, sol_VL_train_marker, sol_VL_test_marker)
 
-test_predicted <- CNN_nz$val_predicted
-train_predicted <- CNN_nz$train_predicted
+test_predicted <- CNN_sol_VL$val_predicted
+train_predicted <- CNN_sol_VL$train_predicted
 
-cor(Pheno_training_data_nz,train_predicted)
+cor(sol_VL_train_phenotype,train_predicted)
 quartz()
-plot(Pheno_test_data_nz, test_predicted)
+cor(sol_VL_test_phenotype, test_predicted)
+plot(sol_VL_test_phenotype, test_predicted)
 
-dim(SNP_training_data_nz)#[1:5,1:5]
+
+sol_VL_train_test_CNN <- cbind(sol_VL_test_phenotype, test_predicted)
+
+#dim(SNP_training_data_nz)#[1:5,1:5]
+
+# lab
+
+
+CNN_lab <- CNN_func(lab_train_phenotype, lab_train_marker, lab_test_marker)
+
+test_predicted <- CNN_lab$val_predicted
+train_predicted <- CNN_lab$train_predicted
+
+cor(lab_train_phenotype,train_predicted)
+quartz()
+cor(lab_test_phenotype, test_predicted)
+plot(lab_test_phenotype, test_predicted)
+
+
+
+CNN_tot <- CNN_func(tot_train_phenotype, tot_train_marker, tot_test_marker)
+
+test_predicted <- CNN_tot$val_predicted
+train_predicted <- CNN_tot$train_predicted
+
+cor(tot_train_phenotype,train_predicted)
+quartz()
+cor(tot_test_phenotype, test_predicted)
+plot(tot_test_phenotype, test_predicted)
