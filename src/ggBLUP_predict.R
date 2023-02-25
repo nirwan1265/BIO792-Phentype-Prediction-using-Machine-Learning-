@@ -57,21 +57,67 @@ lab_test <- setdiff(1:nrow(lab_markers), lab_train)
 sol_VL_train <- as.matrix(sample(1:nrow(sol_VL_markers), 1035))
 sol_VL_test <- setdiff(1:nrow(sol_VL_markers), sol_VL_train)
 
+
 # Subsetting Testing and Training data for phenotypes and markers
+
 tot_train_phenotype <- as.matrix(tot[tot_train, ])
 tot_train_marker <- as.matrix(tot_markers[tot_train, ], K = NULL)
+# Removing NAs from training and putting them into testing
+nas <- which(is.na(tot_train_phenotype))
+tot_train_phenotype <- as.matrix(tot_train_phenotype[-nas, ])
+tot_train_marker <- as.matrix(tot_train_marker[-nas, ])
+tot_train <- tot_train[-nas,]
+tot_test <- sort(c(tot_test, nas))
 tot_test_phenotype <- as.matrix(tot[tot_test, ])
 tot_test_marker <- as.matrix(tot_markers[tot_test, ], K = NULL)
 
+
+# # Subsetting Testing and Training data for phenotypes and markers
+# tot_train_phenotype <- as.matrix(tot[tot_train, ])
+# # removing NA and updating them to the test data
+# na_rows <- which(is.na(tot_train_phenotype))
+# tot_test <- sort(c(tot_test,na_rows))
+# tot_train <- setdiff(1:nrow(tot_markers), tot_test)
+# tot_train_phenotype <- as.matrix(tot_train_phenotype[!is.na(tot_train_phenotype)])
+# tot_train_marker <- as.matrix(tot_markers[tot_train, ], K = NULL)
+# tot_test_phenotype <- as.matrix(tot[tot_test, ])
+# tot_test_marker <- as.matrix(tot_markers[tot_test, ], K = NULL)
+
 lab_train_phenotype <- as.matrix(lab[lab_train, ])
 lab_train_marker <- as.matrix(lab_markers[lab_train, ], K = NULL)
+# Removing NAs from training and putting them into testing
+nas <- which(is.na(lab_train_phenotype))
+lab_train_phenotype <- as.matrix(lab_train_phenotype[-nas, ])
+lab_train_marker <- as.matrix(lab_train_marker[-nas, ])
+lab_train <- lab_train[-nas,]
+lab_test <- sort(c(lab_test, nas))
 lab_test_phenotype <- as.matrix(lab[lab_test, ])
 lab_test_marker <- as.matrix(lab_markers[lab_test, ], K = NULL)
 
+
 sol_VL_train_phenotype <- as.matrix(sol_VL[sol_VL_train, ])
 sol_VL_train_marker <- as.matrix(sol_VL_markers[sol_VL_train, ], K = NULL)
+# Removing NAs from training and putting them into testing
+nas <- which(is.na(sol_VL_train_phenotype))
+
+sol_VL_train_phenotype <- as.matrix(sol_VL_train_phenotype[-nas, ])
+sol_VL_train_marker <- as.matrix(sol_VL_train_marker[-nas, ])
+sol_VL_train <- sol_VL_train[-nas,]
+sol_VL_test <- sort(c(sol_VL_test, nas))
 sol_VL_test_phenotype <- as.matrix(sol_VL[sol_VL_test, ])
 sol_VL_test_marker <- as.matrix(sol_VL_markers[sol_VL_test, ], K = NULL)
+
+
+
+# sol_VL_train_phenotype <- as.matrix(sol_VL[sol_VL_train, ])
+# # removing NA and updating them to the test data
+# na_rows <- which(is.na(sol_VL_train_phenotype))
+# sol_VL_test <- sort(c(sol_VL_test,na_rows))
+# sol_VL_train <- setdiff(1:nrow(sol_VL_markers), sol_VL_test)
+# sol_VL_train_phenotype <- as.matrix(sol_VL_train_phenotype[!is.na(sol_VL_train_phenotype)])
+# sol_VL_train_marker <- as.matrix(sol_VL_markers[sol_VL_train, ], K = NULL)
+# sol_VL_test_phenotype <- as.matrix(sol_VL[sol_VL_test, ])
+# sol_VL_test_marker <- as.matrix(sol_VL_markers[sol_VL_test, ], K = NULL)
 
 
 # Training the model

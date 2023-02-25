@@ -24,7 +24,7 @@ DNN_func = function (train_pheno, train_geno, test_geno) {
   set.seed(200)
   tensorflow::tf$random$set_seed(200)
   history <- model %>%  
-    fit(train_geno_mnum, train_pheno, epochs = 1000, batch_size = 10, validation_split = 0.2, verbose = 0,
+    fit(train_geno_mnum, train_pheno, epochs = 250, batch_size = 10, validation_split = 0.2, verbose = 0,
         callbacks = list(callback_early_stopping(patience = 30), callback_reduce_lr_on_plateau(factor = 0.1)))
   train_pred <- model %>% predict(train_geno_mnum, batch_size = batchs)
   val_pred <- model %>% predict(test_geno_mnum, batch_size = batchs)
@@ -42,7 +42,6 @@ test_predicted <- DNN_sol_VL$val_predicted
 train_predicted <- DNN_sol_VL$train_predicted
 
 cor(sol_VL_train_phenotype,train_predicted)
-quartz()
 cor(sol_VL_test_phenotype, test_predicted)
 
 sol_VL_train_test_DNN <- cbind(sol_VL_test_phenotype, test_predicted)
@@ -54,9 +53,22 @@ sol_VL_train_test_DNN <- cbind(sol_VL_test_phenotype, test_predicted)
 DNN_lab <- DNN_func(lab_train_phenotype, lab_train_marker, lab_test_marker)
 test_predicted <- DNN_lab$val_predicted
 train_predicted <- DNN_lab$train_predicted
+
 cor(lab_train_phenotype,train_predicted)
-quartz()
-cor(lab_test_phenotype, test_predicted)
-plot(lab_test_phenotype, test_predicted)
+
+
+
+# Get row indices that have complete data in both matrices
+complete_rows <- complete.cases(lab_test_phenotype, test_predicted)
+
+# Subset matrices to include only complete rows
+lab_test_phenotype_complete <- lab_test_phenotype[complete_rows, ]
+test_predicted_complete <- test_predicted[complete_rows, ]
+
+# Compute correlation
+cor(lab_test_phenotype_complete, test_predicted_complete)
+
+
+
 
 
