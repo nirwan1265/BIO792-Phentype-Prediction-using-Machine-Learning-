@@ -23,3 +23,19 @@ cor(sol_VL_train_phenotype,train_predicted)
 cor(sol_VL_test_phenotype, test_predicted)
 
 sol_VL_train_test_RF <- cbind(sol_VL_test_phenotype, test_predicted)
+
+
+RF_lab <- RF_func(lab_train_phenotype, lab_train_marker, lab_test_marker, "FM")
+test_predicted <- RF_lab$val_predicted
+train_predicted <- RF_lab$train_predicted
+
+cor(lab_train_phenotype,train_predicted)
+# Get row indices that have complete data in both matrices
+complete_rows <- complete.cases(lab_test_phenotype, test_predicted)
+
+# Subset matrices to include only complete rows
+lab_test_phenotype_complete <- lab_test_phenotype[complete_rows, ]
+test_predicted_complete <- test_predicted[complete_rows, ]
+
+# Compute correlation
+cor(lab_test_phenotype_complete, test_predicted_complete)
