@@ -21,3 +21,25 @@ cor(sol_VL_train_phenotype,train_predicted)
 cor(sol_VL_test_phenotype, test_predicted)
 
 sol_VL_train_test_RRb <- cbind(sol_VL_test_phenotype, test_predicted)
+
+
+RRb_tot <- RRb_func(tot_train_phenotype, tot_train_marker, tot_test_marker)
+
+test_predicted <- RRb_tot$val_predicted
+train_predicted <- RRb_tot$train_predicted
+
+cor(tot_train_phenotype,train_predicted)
+cor(tot_test_phenotype, test_predicted, use = "complete.obs")
+
+tot_train_test_RRb <- cbind(tot_test_phenotype, test_predicted)
+
+
+RRb_lab <- RRb_func(lab_train_phenotype, lab_train_marker, lab_test_marker)
+
+test_predicted <- RRb_lab$val_predicted
+train_predicted <- RRb_lab$train_predicted
+
+cor(lab_train_phenotype,train_predicted)
+cor(lab_test_phenotype, test_predicted, use = "complete.obs")
+
+lab_train_test_RRb <- cbind(lab_test_phenotype, test_predicted)
