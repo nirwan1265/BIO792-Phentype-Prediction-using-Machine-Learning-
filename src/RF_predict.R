@@ -38,4 +38,15 @@ lab_test_phenotype_complete <- lab_test_phenotype[complete_rows, ]
 test_predicted_complete <- test_predicted[complete_rows, ]
 
 # Compute correlation
-cor(lab_test_phenotype_complete, test_predicted_complete)
+cor(lab_test_phenotype, test_predicted, use = "complete.obs")
+
+
+RF_tot <- RF_func(tot_train_phenotype, tot_train_marker, tot_test_marker, "FM")
+
+test_predicted <- RF_tot$val_predicted
+train_predicted <- RF_tot$train_predicted
+
+cor(tot_train_phenotype,train_predicted)
+cor(tot_test_phenotype, test_predicted, use = "complete.obs")
+
+
