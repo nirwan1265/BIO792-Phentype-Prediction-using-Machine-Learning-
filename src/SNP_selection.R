@@ -194,3 +194,13 @@ colnames(x) <- c("soilP","rrBLUP","CNN")
 x <- as.data.frame(x)
 str(x)
 x$CNN <- x$CNN * 2
+
+
+
+
+
+# SNP interaction data 
+snp_interactions is the matrix of interactions
+A <- A.mat(snp_interactions, model = "Additive")
+result <- mixed.solve(y = y, X = X, K = A)
+
