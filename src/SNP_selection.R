@@ -1,4 +1,5 @@
 library(vroom)
+library(dplyr)
 # Change working directory
 setwd("~/Library/Mobile Documents/com~apple~CloudDocs/Github/BIO792-Phentype-Prediction-using-Machine-Learning-/data/nirwan_data")
 # Phenotypes
@@ -20,6 +21,7 @@ hist(sol_VL[,1])
 tot_gwas <- vroom("tot_LMM.txt") %>% select(rs,p_wald) %>% filter(p_wald <= 0.05)
 lab_gwas <- vroom("lab_LMM.txt") %>% select(rs,p_wald) %>% filter(p_wald <= 0.05)
 sol_VL_gwas <- vroom("sol_VL_LMM.txt") %>% select(rs,p_wald) %>% filter(p_wald <= 0.05)
+
 #tot_gwas_trial <- vroom("tot_LMM.txt") %>% select(rs,p_wald)
 
 # Loading the genotype file (MAF)
@@ -47,6 +49,11 @@ lab_markers <- replace(lab_markers, lab_markers == -9,0)
 
 sol_VL_markers <- SNP_markers[sol_VL_gwas_markers]
 sol_VL_markers <- replace(sol_VL_markers, sol_VL_markers == -9,0)
+
+setwd("~/Desktop")
+#write.table(tot_markers,"tot_markers.txt", row.names = F, quote = F)
+write.table(lab_markers,"lab_markers.txt", row.names = F, quote = F)
+write.table(sol_VL_markers,"sol_VL_markers.txt", row.names = F, quote = F)
 
 # Subsetting Testing and Training data for markers
 set.seed(123)
