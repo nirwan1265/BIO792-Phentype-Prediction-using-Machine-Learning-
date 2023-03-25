@@ -52,8 +52,14 @@ sol_VL_markers <- replace(sol_VL_markers, sol_VL_markers == -9,0)
 
 setwd("~/Desktop")
 #write.table(tot_markers,"tot_markers.txt", row.names = F, quote = F)
-write.table(lab_markers,"lab_markers.txt", row.names = F, quote = F)
-write.table(sol_VL_markers,"sol_VL_markers.txt", row.names = F, quote = F)
+#write.table(lab_markers,"lab_markers.txt", row.names = F, quote = F)
+#write.table(sol_VL_markers,"sol_VL_markers.txt", row.names = F, quote = F)
+
+
+# Read relief-based filtered markers
+lab_markers <- vroom("/Users/nirwantandukar/Library/Mobile Documents/com~apple~CloudDocs/Github/BIO792-Phentype-Prediction-using-Machine-Learning-/data/nirwan_data/selected_SNPs/filtered_lab_markers.txt")
+tot_markers <- vroom("/Users/nirwantandukar/Library/Mobile Documents/com~apple~CloudDocs/Github/BIO792-Phentype-Prediction-using-Machine-Learning-/data/nirwan_data/selected_SNPs/filtered_tot_markers.txt")
+sol_VL_markers <- vroom("/Users/nirwantandukar/Library/Mobile Documents/com~apple~CloudDocs/Github/BIO792-Phentype-Prediction-using-Machine-Learning-/data/nirwan_data/selected_SNPs/filtered_sol_VL_markers.txt")
 
 # Subsetting Testing and Training data for markers
 set.seed(123)
@@ -107,6 +113,7 @@ lab_test_marker <- as.matrix(lab_markers[lab_test, ], K = NULL)
 
 sol_VL_train_phenotype <- as.matrix(sol_VL[sol_VL_train, ])
 sol_VL_train_marker <- as.matrix(sol_VL_markers[sol_VL_train, ], K = NULL)
+
 # Removing NAs from training and putting them into testing
 nas <- which(is.na(sol_VL_train_phenotype))
 
