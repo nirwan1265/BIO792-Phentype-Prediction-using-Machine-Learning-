@@ -74,6 +74,9 @@ CNN_tot <- CNN_func(tot_train_phenotype, tot_train_marker, tot_test_marker)
 test_predicted <- CNN_tot$val_predicted
 train_predicted <- CNN_tot$train_predicted
 
+summary(tot_test_phenotype)
+summary(test_predicted)
+
 cor(tot_train_phenotype,train_predicted)
 quartz()
 cor(tot_test_phenotype, test_predicted)

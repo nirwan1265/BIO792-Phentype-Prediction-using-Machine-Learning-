@@ -17,6 +17,10 @@ RRb_sol_VL <- RRb_func(sol_VL_train_phenotype, sol_VL_train_marker, sol_VL_test_
 test_predicted <- RRb_sol_VL$val_predicted
 train_predicted <- RRb_sol_VL$train_predicted
 
+summary(test_predicted)
+summary(sol_VL_test_phenotype)
+
+
 cor(sol_VL_train_phenotype,train_predicted)
 cor(sol_VL_test_phenotype, test_predicted)
 
@@ -27,6 +31,9 @@ RRb_tot <- RRb_func(tot_train_phenotype, tot_train_marker, tot_test_marker)
 
 test_predicted <- RRb_tot$val_predicted
 train_predicted <- RRb_tot$train_predicted
+
+summary(tot_test_phenotype, na.rm = T)
+summary(test_predicted)
 
 cor(tot_train_phenotype,train_predicted)
 cor(tot_test_phenotype, test_predicted, use = "complete.obs")

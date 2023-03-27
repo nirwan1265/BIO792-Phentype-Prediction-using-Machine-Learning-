@@ -72,3 +72,11 @@ cor(lab_test_phenotype_complete, test_predicted_complete)
 
 
 
+# DNN
+DNN_tot <- DNN_func(tot_train_phenotype, tot_train_marker, tot_test_marker)
+
+test_predicted <- DNN_tot$val_predicted
+train_predicted <- DNN_tot$train_predicted
+
+summary(tot_test_phenotype)
+summary(test_predicted)

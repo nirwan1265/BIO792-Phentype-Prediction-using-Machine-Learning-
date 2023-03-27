@@ -42,9 +42,11 @@ cor(lab_test_phenotype, test_predicted, use = "complete.obs")
 
 
 RF_tot <- RF_func(tot_train_phenotype, tot_train_marker, tot_test_marker, "FM")
-
 test_predicted <- RF_tot$val_predicted
 train_predicted <- RF_tot$train_predicted
+
+summary(tot_test_phenotype)
+summary(test_predicted)
 
 cor(tot_train_phenotype,train_predicted)
 cor(tot_test_phenotype, test_predicted, use = "complete.obs")
