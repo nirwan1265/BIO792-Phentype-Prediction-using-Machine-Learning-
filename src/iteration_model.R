@@ -1,5 +1,5 @@
 # Set the number of iterations to run the loop
-num_iter <- 2
+num_iter <- 100
 
 # Correlation
 train_corr_sol_VL <- vector("numeric", num_iter)

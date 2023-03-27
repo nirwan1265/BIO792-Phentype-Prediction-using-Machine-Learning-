@@ -32,7 +32,7 @@ DNN_func = function (train_pheno, train_geno, test_geno) {
   return(return_value)
 }
 # Changed epochs to 100 and batch_size to 10 from batchs
-# Not a lot changed from epocsh 100 to 1000
+# Not a lot changed from epoch 100 to 1000
 
 
 # sol_VL
