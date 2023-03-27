@@ -6,15 +6,15 @@ setwd("~/Library/Mobile Documents/com~apple~CloudDocs/Github/BIO792-Phentype-Pre
 phenotypes <- read.csv("Sorghum_allphospho_africa.csv")
 # Total phosphorus
 tot <- phenotypes["tot"]
-hist(tot[,1])
+#hist(tot[,1])
 
 # Solubility
 lab <- phenotypes["lab"]
-hist(lab[,1])
+#hist(lab[,1])
 
 # Phosphorus retention
 sol_VL <- phenotypes["sol_VL"]
-hist(sol_VL[,1])
+#hist(sol_VL[,1])
 
 
 # Loading GWAS files and only selecting the significant snps
@@ -50,16 +50,16 @@ lab_markers <- replace(lab_markers, lab_markers == -9,0)
 sol_VL_markers <- SNP_markers[sol_VL_gwas_markers]
 sol_VL_markers <- replace(sol_VL_markers, sol_VL_markers == -9,0)
 
-setwd("~/Desktop")
+#setwd("~/Desktop")
 #write.table(tot_markers,"tot_markers.txt", row.names = F, quote = F)
 #write.table(lab_markers,"lab_markers.txt", row.names = F, quote = F)
 #write.table(sol_VL_markers,"sol_VL_markers.txt", row.names = F, quote = F)
 
 
 # Read relief-based filtered markers
-lab_markers <- vroom("/Users/nirwantandukar/Library/Mobile Documents/com~apple~CloudDocs/Github/BIO792-Phentype-Prediction-using-Machine-Learning-/data/nirwan_data/selected_SNPs/filtered_lab_markers.txt")
-tot_markers <- vroom("/Users/nirwantandukar/Library/Mobile Documents/com~apple~CloudDocs/Github/BIO792-Phentype-Prediction-using-Machine-Learning-/data/nirwan_data/selected_SNPs/filtered_tot_markers.txt")
-sol_VL_markers <- vroom("/Users/nirwantandukar/Library/Mobile Documents/com~apple~CloudDocs/Github/BIO792-Phentype-Prediction-using-Machine-Learning-/data/nirwan_data/selected_SNPs/filtered_sol_VL_markers.txt")
+#lab_markers <- vroom("/Users/nirwantandukar/Library/Mobile Documents/com~apple~CloudDocs/Github/BIO792-Phentype-Prediction-using-Machine-Learning-/data/nirwan_data/selected_SNPs/filtered_lab_markers.txt")
+#tot_markers <- vroom("/Users/nirwantandukar/Library/Mobile Documents/com~apple~CloudDocs/Github/BIO792-Phentype-Prediction-using-Machine-Learning-/data/nirwan_data/selected_SNPs/filtered_tot_markers.txt")
+#sol_VL_markers <- vroom("/Users/nirwantandukar/Library/Mobile Documents/com~apple~CloudDocs/Github/BIO792-Phentype-Prediction-using-Machine-Learning-/data/nirwan_data/selected_SNPs/filtered_sol_VL_markers.txt")
 
 # Subsetting Testing and Training data for markers
 set.seed(123)
@@ -115,26 +115,17 @@ sol_VL_train_phenotype <- as.matrix(sol_VL[sol_VL_train, ])
 sol_VL_train_marker <- as.matrix(sol_VL_markers[sol_VL_train, ], K = NULL)
 
 # Removing NAs from training and putting them into testing
-nas <- which(is.na(sol_VL_train_phenotype))
+#nas <- which(is.na(sol_VL_train_phenotype))
 
-sol_VL_train_phenotype <- as.matrix(sol_VL_train_phenotype[-nas, ])
-sol_VL_train_marker <- as.matrix(sol_VL_train_marker[-nas, ])
-sol_VL_train <- sol_VL_train[-nas,]
-sol_VL_test <- sort(c(sol_VL_test, nas))
+#sol_VL_train_phenotype <- as.matrix(sol_VL_train_phenotype[-nas, ])
+#sol_VL_train_marker <- as.matrix(sol_VL_train_marker[-nas, ])
+#sol_VL_train <- sol_VL_train[-nas,]
+#sol_VL_test <- sort(c(sol_VL_test, nas))
 sol_VL_test_phenotype <- as.matrix(sol_VL[sol_VL_test, ])
 sol_VL_test_marker <- as.matrix(sol_VL_markers[sol_VL_test, ], K = NULL)
 
 
 
-# sol_VL_train_phenotype <- as.matrix(sol_VL[sol_VL_train, ])
-# # removing NA and updating them to the test data
-# na_rows <- which(is.na(sol_VL_train_phenotype))
-# sol_VL_test <- sort(c(sol_VL_test,na_rows))
-# sol_VL_train <- setdiff(1:nrow(sol_VL_markers), sol_VL_test)
-# sol_VL_train_phenotype <- as.matrix(sol_VL_train_phenotype[!is.na(sol_VL_train_phenotype)])
-# sol_VL_train_marker <- as.matrix(sol_VL_markers[sol_VL_train, ], K = NULL)
-# sol_VL_test_phenotype <- as.matrix(sol_VL[sol_VL_test, ])
-# sol_VL_test_marker <- as.matrix(sol_VL_markers[sol_VL_test, ], K = NULL)
 
 
 # Training the model

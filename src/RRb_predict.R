@@ -43,3 +43,8 @@ cor(lab_train_phenotype,train_predicted)
 cor(lab_test_phenotype, test_predicted, use = "complete.obs")
 
 lab_train_test_RRb <- cbind(lab_test_phenotype, test_predicted)
+
+
+
+
+x <- train_preds_t
