@@ -41,6 +41,9 @@ DNN_sol_VL <- DNN_func(sol_VL_train_phenotype, sol_VL_train_marker, sol_VL_test_
 test_predicted <- DNN_sol_VL$val_predicted
 train_predicted <- DNN_sol_VL$train_predicted
 
+summary(sol_VL_test_phenotype)
+summary(test_predicted)
+
 cor(sol_VL_train_phenotype,train_predicted)
 cor(sol_VL_test_phenotype, test_predicted)
 

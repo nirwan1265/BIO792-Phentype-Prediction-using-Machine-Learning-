@@ -3,7 +3,7 @@ RF_func = function (train_pheno, train_geno, test_geno, check){
   test_geno = (test_geno + 1) / 3
   set.seed(200)
   if (check == "FM"){
-    train_RF = randomForest::randomForest(x = train_geno, y = train_pheno, verbose=FALSE, mtry=round(dim(train_geno)[1]/3), ntree=1000, metric="RMSE", maxnodes=NULL)
+    train_RF = randomForest::randomForest(x = train_geno, y = train_pheno, verbose=FALSE, mtry=round(dim(train_geno)[1]/3), ntree=5000, metric="RMSE", maxnodes=NULL)
   } else {
     train_RF = randomForest::randomForest(x = train_geno, y = train_pheno, verbose=FALSE, mtry=round(dim(train_geno)[1]), ntree=100, metric="RMSE", maxnodes=NULL)
   }
