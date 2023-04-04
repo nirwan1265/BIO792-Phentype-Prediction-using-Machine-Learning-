@@ -34,6 +34,8 @@ SNP_markers <- vroom("combined.txt")
 #SNP_markers <- readRDS("SNP_markers.RDS")
 SNP_markers[1:10,1:10]
 
+
+
 # Getting the significant markers
 tot_gwas_markers <- unlist(as.vector(tot_gwas[,1]))
 lab_gwas_markers <- unlist(as.vector(lab_gwas[,1]))

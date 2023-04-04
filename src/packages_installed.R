@@ -12,6 +12,12 @@ library(foreach)
 library(vroom)
 library(dplyr)
 library(reticulate)
+library(e1071)
+library(glmnet)
+library(gbm)
+library(xgboost)
+
+#install.packages("BayesR", repos="http://R-Forge.R-project.org")
 #path_to_python <- install_python()
 #Note that if you already have Python installed, you don’t need to call install_python() and instead can just supply an absolute path to the Python executable.
 virtualenv_create("r-reticulate", python = path_to_python)
