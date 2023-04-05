@@ -13,7 +13,7 @@ BayesR_func_lasso <- function(train_pheno, train_geno, test_geno, alpha = 1) {
   prior_w[1] <- mean(train_pheno)
   
   # Compute the BayesR model
-  library(BayesR)
+  
   br <- BayesR(y = train_pheno, X = train_geno, S = 1, prior_w = prior_w, lambda = lambda, alpha = alpha)
   
   # Predict phenotypes for training and test data

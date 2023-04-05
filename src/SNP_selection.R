@@ -27,7 +27,7 @@ sol_VL_gwas <- vroom("sol_VL_LMM.txt") %>% select(rs,p_wald) %>% filter(p_wald <
 # Loading the genotype file (MAF)
 setwd("~/Library/Mobile Documents/com~apple~CloudDocs/Research/Data/Lasky.hapmap/raw/africa.filtered/v3/imputed")
 #Imputed using LDKiNN
-SNP_markers <- vroom("combined.txt")
+SNP_markers <- vroom("allchrom_MAF_sorghum.txt")
 #SNP_markers[1:100,1:100]
 #SNP_markers <- vroom("allchrom_africa_filtered.MAF.txt")
 #saveRDS(SNP_markers,"SNP_markers.RDS")

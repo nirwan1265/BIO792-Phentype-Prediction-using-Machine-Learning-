@@ -46,9 +46,11 @@ test_predicted <- CNN_sol_VL$val_predicted
 train_predicted <- CNN_sol_VL$train_predicted
 
 cor(sol_VL_train_phenotype,train_predicted)
-quartz()
 cor(sol_VL_test_phenotype, test_predicted)
-plot(sol_VL_test_phenotype, test_predicted)
+
+summary(sol_VL_test_phenotype)
+summary(test_predicted)
+
 
 
 sol_VL_train_test_CNN <- cbind(sol_VL_test_phenotype, test_predicted)
