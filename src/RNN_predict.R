@@ -27,9 +27,9 @@ RNN_func <- function(train_pheno, train_marker, test_marker) {
   )
   
   # Make predictions on the test and train data
-  test_pred <- model %>% predict(test_marker)
-  train_pred <- model %>% predict(train_marker)
-  return_value = list("test_predicted"=test_pred, "train_predicted"=train_pred, "model"=model)
+  val_predicted <- model %>% predict(test_marker)
+  train_predicted <- model %>% predict(train_marker)
+  return_value = list("val_predicted"=val_predicted, "train_predicted"=train_predicted, "model"=model)
   # Return the test predictions
   return(return_value)
 }

@@ -62,9 +62,9 @@ for (i in 1:num_iter) {
   # RRb_tot <- RRb_func(tot_train_phenotype, tot_train_marker, tot_test_marker)
   # RRb_sol_VL <- RRb_func(sol_VL_train_phenotype, sol_VL_train_marker, sol_VL_test_marker)
   # RRb_lab <- RRb_func(lab_train_phenotype, lab_train_marker, lab_test_marker)
-  RRb_tot <- DNN_func(tot_train_phenotype, tot_train_marker, tot_test_marker)
-  RRb_sol_VL <- DNN_func(sol_VL_train_phenotype, sol_VL_train_marker, sol_VL_test_marker)
-  RRb_lab <- DNN_func(lab_train_phenotype, lab_train_marker, lab_test_marker)
+  #RRb_tot <- DNN_func(tot_train_phenotype, tot_train_marker, tot_test_marker)
+  RRb_sol_VL <- RNN_func(sol_VL_train_phenotype, sol_VL_train_marker, sol_VL_test_marker)
+  #RRb_lab <- DNN_func(lab_train_phenotype, lab_train_marker, lab_test_marker)
   
 
   # Extract the predicted values for the training and test sets
@@ -74,17 +74,17 @@ for (i in 1:num_iter) {
   train_corr_sol_VL[i] <- cor(sol_VL_train_phenotype, train_preds_sol_VL[1:nrow(RRb_sol_VL$train_predicted), i], use = "pairwise.complete.obs")
   test_corr_sol_VL[i] <- cor(sol_VL_test_phenotype, test_preds_sol_VL[1:nrow(RRb_sol_VL$val_predicted), i], use = "pairwise.complete.obs")
    
-  train_preds_tot[1:nrow(RRb_tot$train_predicted), i] <- RRb_tot$train_predicted
-  test_preds_tot[1:nrow(RRb_tot$val_predicted), i] <- RRb_tot$val_predicted
+  # train_preds_tot[1:nrow(RRb_tot$train_predicted), i] <- RRb_tot$train_predicted
+  # test_preds_tot[1:nrow(RRb_tot$val_predicted), i] <- RRb_tot$val_predicted
   # Calculate correlation without NA values
-  train_corr_tot[i] <- cor(tot_train_phenotype, train_preds_tot[1:nrow(RRb_tot$train_predicted), i], use = "pairwise.complete.obs")
-  test_corr_tot[i] <- cor(tot_test_phenotype, test_preds_tot[1:nrow(RRb_tot$val_predicted), i], use = "pairwise.complete.obs")
-  
-  train_preds_lab[1:nrow(RRb_lab$train_predicted), i] <- RRb_lab$train_predicted
-  test_preds_lab[1:nrow(RRb_lab$val_predicted), i] <- RRb_lab$val_predicted
+  # train_corr_tot[i] <- cor(tot_train_phenotype, train_preds_tot[1:nrow(RRb_tot$train_predicted), i], use = "pairwise.complete.obs")
+  # test_corr_tot[i] <- cor(tot_test_phenotype, test_preds_tot[1:nrow(RRb_tot$val_predicted), i], use = "pairwise.complete.obs")
+  # 
+  # train_preds_lab[1:nrow(RRb_lab$train_predicted), i] <- RRb_lab$train_predicted
+  # test_preds_lab[1:nrow(RRb_lab$val_predicted), i] <- RRb_lab$val_predicted
   # Calculate correlation without NA values
-  train_corr_lab[i] <- cor(lab_train_phenotype, train_preds_lab[1:nrow(RRb_lab$train_predicted), i], use = "pairwise.complete.obs")
-  test_corr_lab[i] <- cor(lab_test_phenotype, test_preds_lab[1:nrow(RRb_lab$val_predicted), i], use = "pairwise.complete.obs")
+  # train_corr_lab[i] <- cor(lab_train_phenotype, train_preds_lab[1:nrow(RRb_lab$train_predicted), i], use = "pairwise.complete.obs")
+  # test_corr_lab[i] <- cor(lab_test_phenotype, test_preds_lab[1:nrow(RRb_lab$val_predicted), i], use = "pairwise.complete.obs")
 }
 
 # Calculate mean correlation
