@@ -44,6 +44,7 @@ RNN_func <- function(train_pheno, train_marker, test_marker) {
 
 # sol_VL
 RNN_sol_VL <- RNN_func(sol_VL_train_phenotype, sol_VL_train_marker, sol_VL_test_marker)
+RNN_sol_VL_model <- RNN_sol_VL$model
 
 test_predicted <- RNN_sol_VL$test_pred
 train_predicted <- RNN_sol_VL$train_pred
