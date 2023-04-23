@@ -1,69 +1,63 @@
-library(vroom)
-library(dplyr)
+# Loading the phenotype data
 # Change working directory
-setwd("~/Library/Mobile Documents/com~apple~CloudDocs/Github/BIO792-Phentype-Prediction-using-Machine-Learning-/data/nirwan_data")
+dir_pheno <- "~/Library/Mobile Documents/com~apple~CloudDocs/Github/BIO792-Phentype-Prediction-using-Machine-Learning-/data/nirwan_data/phenotype_data/"
+
 # Phenotypes
-phenotypes <- read.csv("Sorghum_allphospho_africa.csv")
+phenotypes <- read.csv(paste0(dir_pheno,"Sorghum_allphospho_africa.csv"))
+
 # Total phosphorus
-tot <- phenotypes["tot"]
-#hist(tot[,1])
+stp <- phenotypes["stp10"]
 
 # Solubility
-lab <- phenotypes["lab"]
+PBR <- phenotypes["PBR1"]
 #hist(lab[,1])
 
 # Phosphorus retention
-sol_VL <- phenotypes["sol_VL"]
+PNZ <- phenotypes["PNZ1"]
 #hist(sol_VL[,1])
 
+# Alkaline soil P
+POL <- phenotypes["POL1"]
 
+
+####### Filtering process
+### SNP selection using GWAS MLM 
 # Loading GWAS files and only selecting the significant snps
-tot_gwas <- vroom("tot_LMM.txt") %>% select(rs,p_wald) %>% filter(p_wald <= 0.05)
-lab_gwas <- vroom("lab_LMM.txt") %>% select(rs,p_wald) %>% filter(p_wald <= 0.05)
-sol_VL_gwas <- vroom("sol_VL_LMM.txt") %>% select(rs,p_wald) %>% filter(p_wald <= 0.05)
+dir_gwas <- "~/Library/Mobile Documents/com~apple~CloudDocs/Github/BIO792-Phentype-Prediction-using-Machine-Learning-/data/nirwan_data/gwas/"
+stp_gwas <- vroom(paste0(dir_gwas,"stp10.txt")) %>% select(rs,p_wald) %>% filter(p_wald <= 0.05)
+PBR_gwas <- vroom(paste0(dir_gwas,"PBR1.txt")) %>% select(rs,p_wald) %>% filter(p_wald <= 0.05)
+PNZ_gwas <- vroom(paste0(dir_gwas,"PNZ1.txt")) %>% select(rs,p_wald) %>% filter(p_wald <= 0.05)
+POL_gwas <- vroom(paste0(dir_gwas,"POL1.txt")) %>% select(rs,p_wald) %>% filter(p_wald <= 0.05)
 
-#tot_gwas_trial <- vroom("tot_LMM.txt") %>% select(rs,p_wald)
-
-# Loading the genotype file (MAF)
-setwd("~/Library/Mobile Documents/com~apple~CloudDocs/Research/Data/Lasky.hapmap/raw/africa.filtered/v3/imputed")
-#Imputed using LDKiNN
-SNP_markers <- vroom("allchrom_MAF_sorghum.txt")
-#SNP_markers[1:100,1:100]
-#SNP_markers <- vroom("allchrom_africa_filtered.MAF.txt")
-#saveRDS(SNP_markers,"SNP_markers.RDS")
-#SNP_markers <- readRDS("SNP_markers.RDS")
+####### Loading the genotype file (MAF)
+# Imputed using- 1.) nearest neighbor searches using Viterbi algorithm and then LDKiNN
+dir_geno <- "~/Library/Mobile Documents/com~apple~CloudDocs/Research/Data/Lasky.hapmap/raw/africa.filtered/v3/imputed/"
+SNP_markers <- vroom(paste0(dir_geno,"allchrom_MAF_sorghum.txt"))
+# Sanity check
 SNP_markers[1:10,1:10]
 
+# Filtering out the significant markers from GWAS
+stp_gwas_markers <- unlist(as.vector(stp_gwas[,1]))
+PBR_gwas_markers <- unlist(as.vector(PBR_gwas[,1]))
+PNZ_gwas_markers <- unlist(as.vector(PNZ_gwas[,1]))
+POL_gwas_markers <- unlist(as.vector(POL_gwas[,1]))
 
-
-# Getting the significant markers
-tot_gwas_markers <- unlist(as.vector(tot_gwas[,1]))
-lab_gwas_markers <- unlist(as.vector(lab_gwas[,1]))
-sol_VL_gwas_markers <- unlist(as.vector(sol_VL_gwas[,1]))
-
-
+##### ASSUMPTION - the missing makers are homozygous
 # Subsetting markers - replacing -9 with 0
-tot_markers <- SNP_markers[tot_gwas_markers]
-tot_markers <- replace(tot_markers, tot_markers == -9,0)
+stp_markers <- SNP_markers[stp_gwas_markers]
+stp_markers <- replace(stp_markers, stp_markers == -9,0)
 
-lab_markers <- SNP_markers[lab_gwas_markers]
-lab_markers <- replace(lab_markers, lab_markers == -9,0)
+PBR_markers <- SNP_markers[PBR_gwas_markers]
+PBR_markers <- replace(PBR_markers, PBR_markers == -9,0)
 
-sol_VL_markers <- SNP_markers[sol_VL_gwas_markers]
-sol_VL_markers <- replace(sol_VL_markers, sol_VL_markers == -9,0)
+PNZ_markers <- SNP_markers[PNZ_gwas_markers]
+PNZ_markers <- replace(PNZ_markers, PNZ_markers == -9,0)
 
-#setwd("~/Desktop")
-#write.table(tot_markers,"tot_markers.txt", row.names = F, quote = F)
-#write.table(lab_markers,"lab_markers.txt", row.names = F, quote = F)
-#write.table(sol_VL_markers,"sol_VL_markers.txt", row.names = F, quote = F)
+POL_markers <- SNP_markers[POL_gwas_markers]
+POL_markers <- replace(POL_markers, POL_markers == -9,0)
 
 
-# Read relief-based filtered markers
-#lab_markers <- vroom("/Users/nirwantandukar/Library/Mobile Documents/com~apple~CloudDocs/Github/BIO792-Phentype-Prediction-using-Machine-Learning-/data/nirwan_data/selected_SNPs/filtered_lab_markers.txt")
-#tot_markers <- vroom("/Users/nirwantandukar/Library/Mobile Documents/com~apple~CloudDocs/Github/BIO792-Phentype-Prediction-using-Machine-Learning-/data/nirwan_data/selected_SNPs/filtered_tot_markers.txt")
-#sol_VL_markers <- vroom("/Users/nirwantandukar/Library/Mobile Documents/com~apple~CloudDocs/Github/BIO792-Phentype-Prediction-using-Machine-Learning-/data/nirwan_data/selected_SNPs/filtered_sol_VL_markers.txt")
-
-# Subsetting Testing and Training data for markers
+##### Subsetting Testing and Training data for markers
 set.seed(123)
 
 tot_train <- as.matrix(sample(1:nrow(tot_markers), 1035))

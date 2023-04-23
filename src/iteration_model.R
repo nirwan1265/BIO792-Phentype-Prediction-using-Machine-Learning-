@@ -1,98 +1,120 @@
 # Set the number of iterations to run the loop
-num_iter <- 100
+num_iter <- 6
 
 # Correlation
-train_corr_sol_VL <- vector("numeric", num_iter)
-test_corr_sol_VL <- vector("numeric", num_iter)
+train_corr_stp <- vector("numeric", num_iter)
+test_corr_stp <- vector("numeric", num_iter)
 
-train_corr_tot <- vector("numeric", num_iter)
-test_corr_tot <- vector("numeric", num_iter)
+train_corr_stp <- vector("numeric", num_iter)
+test_corr_stp <- vector("numeric", num_iter)
 
 train_corr_lab <- vector("numeric", num_iter)
 test_corr_lab <- vector("numeric", num_iter)
 
 
 # Create empty vectors to store the predicted values for each iteration
-train_preds_sol_VL <- matrix(NA, nrow = nrow(sol_VL), ncol = num_iter)
-test_preds_sol_VL <- matrix(NA, nrow = nrow(sol_VL), ncol = num_iter)
+train_preds_stp <- matrix(NA, nrow = nrow(stp), ncol = num_iter)
+test_preds_stp <- matrix(NA, nrow = nrow(stp), ncol = num_iter)
 
-train_preds_tot <- matrix(NA, nrow = nrow(tot), ncol = num_iter)
-test_preds_tot <- matrix(NA, nrow = nrow(tot), ncol = num_iter)
+train_preds_stp <- matrix(NA, nrow = nrow(stp), ncol = num_iter)
+test_preds_stp <- matrix(NA, nrow = nrow(stp), ncol = num_iter)
 
 train_preds_lab <- matrix(NA, nrow = nrow(lab), ncol = num_iter)
 test_preds_lab <- matrix(NA, nrow = nrow(lab), ncol = num_iter)
 
 
+# Initialize lists to store test predictions
+test_preds_stp_list <- vector("list", num_iter)
+test_preds_PBR_list <- vector("list", num_iter)
+test_preds_PNZ_list <- vector("list", num_iter)
+test_preds_sol_Mo_list <- vector("list", num_iter)
+
+
+
+
 # Run the loop
 for (i in 1:num_iter) {
   # Randomly sample markers and phenotypes for the training set
-  tot_train <- as.matrix(sample(1:nrow(tot_markers), 1035))
-  tot_test <- setdiff(1:nrow(tot_markers), tot_train)
-  tot_train_phenotype <- as.matrix(tot[tot_train, ])
-  tot_train_marker <- as.matrix(tot_markers[tot_train, ], K = NULL)
+  stp_train <- as.matrix(sample(1:nrow(stp_markers), 1035))
+  stp_test <- setdiff(1:nrow(stp_markers), stp_train)
+  stp_train_phenotype <- as.matrix(stp[stp_train, ])
+  stp_train_marker <- as.matrix(stp_markers[stp_train, ], K = NULL)
   # Removing NAs from training and putting them into testing
-  nas <- which(is.na(tot_train_phenotype))
-  tot_train_phenotype <- as.matrix(tot_train_phenotype[-nas, ])
-  tot_train_marker <- as.matrix(tot_train_marker[-nas, ])
-  tot_train <- tot_train[-nas,]
-  tot_test <- sort(c(tot_test, nas))
-  tot_test_phenotype <- as.matrix(tot[tot_test, ])
-  tot_test_marker <- as.matrix(tot_markers[tot_test, ], K = NULL)
+  nas <- which(is.na(stp_train_phenotype))
+  stp_train_phenotype <- as.matrix(stp_train_phenotype[-nas, ])
+  stp_train_marker <- as.matrix(stp_train_marker[-nas, ])
+  stp_train <- stp_train[-nas,]
+  stp_test <- sort(c(stp_test, nas))
+  stp_test_phenotype <- as.matrix(stp[stp_test, ])
+  stp_test_marker <- as.matrix(stp_markers[stp_test, ], K = NULL)
   
   
-  lab_train <- as.matrix(sample(1:nrow(lab_markers), 1035))
-  lab_test <- setdiff(1:nrow(lab_markers), lab_train)
-  lab_train_phenotype <- as.matrix(lab[lab_train, ])
-  lab_train_marker <- as.matrix(lab_markers[lab_train, ], K = NULL)
+  # lab_train <- as.matrix(sample(1:nrow(lab_markers), 1035))
+  # lab_test <- setdiff(1:nrow(lab_markers), lab_train)
+  # lab_train_phenotype <- as.matrix(lab[lab_train, ])
+  # lab_train_marker <- as.matrix(lab_markers[lab_train, ], K = NULL)
   # Removing NAs from training and putting them into testing
-  nas <- which(is.na(lab_train_phenotype))
-  lab_train_phenotype <- as.matrix(lab_train_phenotype[-nas, ])
-  lab_train_marker <- as.matrix(lab_train_marker[-nas, ])
-  lab_train <- lab_train[-nas,]
-  lab_test <- sort(c(lab_test, nas))
-  lab_test_phenotype <- as.matrix(lab[lab_test, ])
-  lab_test_marker <- as.matrix(lab_markers[lab_test, ], K = NULL)
-
-  sol_VL_train_phenotype <- as.matrix(sol_VL[sol_VL_train, ])
-  sol_VL_train_marker <- as.matrix(sol_VL_markers[sol_VL_train, ], K = NULL)
-  sol_VL_test_phenotype <- as.matrix(sol_VL[sol_VL_test, ])
-  sol_VL_test_marker <- as.matrix(sol_VL_markers[sol_VL_test, ], K = NULL)
-  
-    # Fit the rrBLUP model to the training data
-  # RRb_tot <- RRb_func(tot_train_phenotype, tot_train_marker, tot_test_marker)
-  # RRb_sol_VL <- RRb_func(sol_VL_train_phenotype, sol_VL_train_marker, sol_VL_test_marker)
-  # RRb_lab <- RRb_func(lab_train_phenotype, lab_train_marker, lab_test_marker)
-  #RRb_tot <- DNN_func(tot_train_phenotype, tot_train_marker, tot_test_marker)
-  RRb_sol_VL <- RNN_func(sol_VL_train_phenotype, sol_VL_train_marker, sol_VL_test_marker)
-  #RRb_lab <- DNN_func(lab_train_phenotype, lab_train_marker, lab_test_marker)
+  # nas <- which(is.na(lab_train_phenotype))
+  # lab_train_phenotype <- as.matrix(lab_train_phenotype[-nas, ])
+  # lab_train_marker <- as.matrix(lab_train_marker[-nas, ])
+  # lab_train <- lab_train[-nas,]
+  # lab_test <- sort(c(lab_test, nas))
+  # lab_test_phenotype <- as.matrix(lab[lab_test, ])
+  # lab_test_marker <- as.matrix(lab_markers[lab_test, ], K = NULL)
+  # 
+  # stp_train_phenotype <- as.matrix(stp[stp_train, ])
+  # stp_train_marker <- as.matrix(stp_markers[stp_train, ], K = NULL)
+  # stp_test_phenotype <- as.matrix(stp[stp_test, ])
+  # stp_test_marker <- as.matrix(stp_markers[stp_test, ], K = NULL)
+  # 
+  #   # Fit the RNNLUP model to the training data
+  # RNN_stp <- RNN_func(stp_train_phenotype, stp_train_marker, stp_test_marker)
+  # RNN_stp <- RNN_func(stp_train_phenotype, stp_train_marker, stp_test_marker)
+  # RNN_lab <- RNN_func(lab_train_phenotype, lab_train_marker, lab_test_marker)
+    RNN_stp <- RNN_func(stp_train_phenotype, stp_train_marker, stp_test_marker)
+  # RNN_stp <- RNN_func(stp_train_phenotype, stp_train_marker, stp_test_marker)
+  #RNN_lab <- RNN_func(lab_train_phenotype, lab_train_marker, lab_test_marker)
   
 
   # Extract the predicted values for the training and test sets
-  train_preds_sol_VL[1:nrow(RRb_sol_VL$train_predicted), i] <- RRb_sol_VL$train_predicted
-  test_preds_sol_VL[1:nrow(RRb_sol_VL$val_predicted), i] <- RRb_sol_VL$val_predicted
+  # train_preds_stp[1:nrow(RNN_stp$train_predicted), i] <- RNN_stp$train_predicted
+  # test_preds_stp[1:nrow(RNN_stp$val_predicted), i] <- RNN_stp$val_predicted
+  # # Calculate correlation without NA values
+  # train_corr_stp[i] <- cor(stp_train_phenotype, train_preds_stp[1:nrow(RNN_stp$train_predicted), i], use = "pairwise.complete.obs")
+  # test_corr_stp[i] <- cor(stp_test_phenotype, test_preds_stp[1:nrow(RNN_stp$val_predicted), i], use = "pairwise.complete.obs")
+  #  
+  train_preds_stp[1:nrow(RNN_stp$train_predicted), i] <- RNN_stp$train_predicted
+  test_preds_stp[1:nrow(RNN_stp$val_predicted), i] <- RNN_stp$val_predicted
+  #Calculate correlation without NA values
+  train_corr_stp[i] <- cor(stp_train_phenotype, train_preds_stp[1:nrow(RNN_stp$train_predicted), i], use = "pairwise.complete.obs")
+  test_corr_stp[i] <- cor(stp_test_phenotype, test_preds_stp[1:nrow(RNN_stp$val_predicted), i], use = "pairwise.complete.obs")
+
+  # train_preds_lab[1:nrow(RNN_lab$train_predicted), i] <- RNN_lab$train_predicted
+  # test_preds_lab[1:nrow(RNN_lab$val_predicted), i] <- RNN_lab$val_predicted
   # Calculate correlation without NA values
-  train_corr_sol_VL[i] <- cor(sol_VL_train_phenotype, train_preds_sol_VL[1:nrow(RRb_sol_VL$train_predicted), i], use = "pairwise.complete.obs")
-  test_corr_sol_VL[i] <- cor(sol_VL_test_phenotype, test_preds_sol_VL[1:nrow(RRb_sol_VL$val_predicted), i], use = "pairwise.complete.obs")
-   
-  # train_preds_tot[1:nrow(RRb_tot$train_predicted), i] <- RRb_tot$train_predicted
-  # test_preds_tot[1:nrow(RRb_tot$val_predicted), i] <- RRb_tot$val_predicted
-  # Calculate correlation without NA values
-  # train_corr_tot[i] <- cor(tot_train_phenotype, train_preds_tot[1:nrow(RRb_tot$train_predicted), i], use = "pairwise.complete.obs")
-  # test_corr_tot[i] <- cor(tot_test_phenotype, test_preds_tot[1:nrow(RRb_tot$val_predicted), i], use = "pairwise.complete.obs")
+  # train_corr_lab[i] <- cor(lab_train_phenotype, train_preds_lab[1:nrow(RNN_lab$train_predicted), i], use = "pairwise.complete.obs")
+  # test_corr_lab[i] <- cor(lab_test_phenotype, test_preds_lab[1:nrow(RNN_lab$val_predicted), i], use = "pairwise.complete.obs")
+  
+  # Initialize empty matrices to store the test predictions for each phenotype
+  stp_pred_matrix <- matrix(NA, nrow = nrow(stp), 1)
+  # PBR_pred_matrix <- matrix(NA, nrow = nrow(PBR), 1)
+  # PNZ_pred_matrix <- matrix(NA, nrow = nrow(PNZ), 1)
+  # sol_Mo_pred_matrix <- matrix(NA, nrow = nrow(sol_Mo), 1)
   # 
-  # train_preds_lab[1:nrow(RRb_lab$train_predicted), i] <- RRb_lab$train_predicted
-  # test_preds_lab[1:nrow(RRb_lab$val_predicted), i] <- RRb_lab$val_predicted
-  # Calculate correlation without NA values
-  # train_corr_lab[i] <- cor(lab_train_phenotype, train_preds_lab[1:nrow(RRb_lab$train_predicted), i], use = "pairwise.complete.obs")
-  # test_corr_lab[i] <- cor(lab_test_phenotype, test_preds_lab[1:nrow(RRb_lab$val_predicted), i], use = "pairwise.complete.obs")
+  # Fill the matrices with the test predictions based on the test indices
+  stp_pred_matrix[stp_test, 1] <- RNN_stp$val_pred
+  # PBR_pred_matrix[PBR_test, 1] <- RNN_PBR$val_predicted
+  # PNZ_pred_matrix[PNZ_test, 1] <- RNN_PNZ$val_predicted
+  # sol_Mo_pred_matrix[sol_Mo_test, 1] <- RNN_sol_Mo$val_predicted
+  # 
+  # Store the filled matrices in the respective lists
+  test_preds_stp_list[[i]] <- stp_pred_matrix
+  
 }
 
-# Calculate mean correlation
-mean_train_corr_sol_VL <- mean(train_corr_sol_VL)
-mean_test_corr_sol_VL <- mean(test_corr_sol_VL)
+mean_train_corr_stp <- mean(train_corr_stp)
+mean_test_corr_stp <- mean(test_corr_stp)
 
-mean_train_corr_tot <- mean(train_corr_tot)
-mean_test_corr_tot <- mean(test_corr_tot)
+mean_train_corr_stp <- mean(train_corr_stp)
+mean_test_corr_stp <- mean(test_corr_stp)
 
-mean_train_corr_lab <- mean(train_corr_lab)
-mean_test_corr_lab <- mean(test_corr_lab)
