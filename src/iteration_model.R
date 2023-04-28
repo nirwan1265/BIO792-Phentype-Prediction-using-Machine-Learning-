@@ -1,5 +1,5 @@
 # Set the number of iterations to run the loop
-num_iter <- 6
+num_iter <- 100
 
 # Correlation
 train_corr_stp <- vector("numeric", num_iter)
