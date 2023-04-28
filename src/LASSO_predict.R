@@ -13,11 +13,12 @@ lasso_func <- function(train_pheno, train_geno, test_geno) {
   # Fit LASSO model with best lambda
   best_model <- glmnet(train_geno, train_pheno, alpha = 1, lambda = best_lambda)
   
-  # Predict phenotypes for test data
-  test_pred <- predict(best_model, newx = test_geno)
+  # Predict phenotypes for test and train data
+  train_predicted <- predict(best_model, newx = train_geno)
+  val_predicted <- predict(best_model, newx = test_geno)
   
-  # Return predicted values and model object
-  return_value <- list("test_predicted" = test_pred, "model" = best_model)
+    # Return predicted values and model object
+  return_value <- list("train_predicted" = train_predicted, "val_predicted"=val_predicted, "model" = best_model)
   return(return_value)
 }
 

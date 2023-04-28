@@ -26,9 +26,9 @@ DNN_func = function (train_pheno, train_geno, test_geno) {
   history <- model %>%  
     fit(train_geno_mnum, train_pheno, epochs = 250, batch_size = 10, validation_split = 0.2, verbose = 0,
         callbacks = list(callback_early_stopping(patience = 30), callback_reduce_lr_on_plateau(factor = 0.1)))
-  train_pred <- model %>% predict(train_geno_mnum, batch_size = batchs)
-  val_pred <- model %>% predict(test_geno_mnum, batch_size = batchs)
-  return_value = list("val_predicted"=val_pred, "train_predicted"=train_pred, "model"=model, "batch"=batchs)
+  train_predicted <- model %>% predict(train_geno_mnum, batch_size = batchs)
+  val_predicted <- model %>% predict(test_geno_mnum, batch_size = batchs)
+  return_value = list("val_predicted"=val_predicted, "train_predicted"=train_predicted, "model"=model, "batch"=batchs)
   return(return_value)
 }
 # Changed epochs to 100 and batch_size to 10 from batchs

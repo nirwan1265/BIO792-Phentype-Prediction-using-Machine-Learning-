@@ -15,6 +15,8 @@ SVM_func <- function(train_pheno, train_geno, test_geno) {
   return(return_value)
 }
 
+val_predicted <- predict(SVM_sol_Mo, sol_Mo_train_marker)
+
 # stp
 SVM_stp <- SVM_func(stp_train_phenotype, stp_train_marker, stp_test_marker)
 

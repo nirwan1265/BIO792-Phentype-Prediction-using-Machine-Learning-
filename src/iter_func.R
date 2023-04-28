@@ -146,32 +146,32 @@ for (i in 1:num_iter) {
   # sol_Mo_test_phenotype <- as.matrix(sol_Mo[sol_Mo_test, ])
   # sol_Mo_test_marker <- as.matrix(sol_Mo_markers[sol_Mo_test, ], K = NULL)
   
-  # Fit the SVM model to the training data
-  SVM_stp <- SVM_func(stp_train_phenotype, stp_train_marker, stp_test_marker)
-  # SVM_PBR <- SVM_func(PBR_train_phenotype, PBR_train_marker, PBR_test_marker)
-  # SVM_PNZ <- SVM_func(PNZ_train_phenotype, PNZ_train_marker, PNZ_test_marker)
-  # SVM_sol_Mo <- SVM_func(sol_Mo_train_phenotype, sol_Mo_train_marker, sol_Mo_test_marker)
+  # Fit the RRb model to the training data
+  RRb_stp <- RRb_func(stp_train_phenotype, stp_train_marker, stp_test_marker)
+  # RRb_PBR <- RRb_func(PBR_train_phenotype, PBR_train_marker, PBR_test_marker)
+  # RRb_PNZ <- RRb_func(PNZ_train_phenotype, PNZ_train_marker, PNZ_test_marker)
+  # RRb_sol_Mo <- RRb_func(sol_Mo_train_phenotype, sol_Mo_train_marker, sol_Mo_test_marker)
   # 
   # Extract the predicted values for the training and test sets
-  train_preds_stp[1:nrow(SVM_stp$train_predicted), i] <- SVM_stp$train_predicted
-  test_preds_stp[1:nrow(SVM_stp$val_predicted), i] <- SVM_stp$val_predicted
-  # train_preds_PBR[1:nrow(SVM_PBR$train_predicted), i] <- SVM_PBR$train_predicted
-  # test_preds_PBR[1:nrow(SVM_PBR$val_predicted), i] <- SVM_PBR$val_predicted
-  # train_preds_PNZ[1:nrow(SVM_PNZ$train_predicted), i] <- SVM_PNZ$train_predicted
-  # test_preds_PNZ[1:nrow(SVM_PNZ$val_predicted), i] <- SVM_PNZ$val_predicted
-  # train_preds_sol_Mo[1:nrow(SVM_sol_Mo$train_predicted), i] <- SVM_sol_Mo$train_predicted
-  # test_preds_sol_Mo[1:nrow(SVM_sol_Mo$val_predicted), i] <- SVM_sol_Mo$val_predicted
+  train_preds_stp[1:nrow(RRb_stp$train_predicted), i] <- RRb_stp$train_predicted
+  test_preds_stp[1:nrow(RRb_stp$val_predicted), i] <- RRb_stp$val_predicted
+  # train_preds_PBR[1:nrow(RRb_PBR$train_predicted), i] <- RRb_PBR$train_predicted
+  # test_preds_PBR[1:nrow(RRb_PBR$val_predicted), i] <- RRb_PBR$val_predicted
+  # train_preds_PNZ[1:nrow(RRb_PNZ$train_predicted), i] <- RRb_PNZ$train_predicted
+  # test_preds_PNZ[1:nrow(RRb_PNZ$val_predicted), i] <- RRb_PNZ$val_predicted
+  # train_preds_sol_Mo[1:nrow(RRb_sol_Mo$train_predicted), i] <- RRb_sol_Mo$train_predicted
+  # test_preds_sol_Mo[1:nrow(RRb_sol_Mo$val_predicted), i] <- RRb_sol_Mo$val_predicted
   # 
   
   # Calculate correlation without NA values
-  train_corr_stp[i] <- cor(stp_train_phenotype, train_preds_stp[1:nrow(SVM_stp$train_predicted), i], use = "pairwise.complete.obs")
-  test_corr_stp[i] <- cor(stp_test_phenotype, test_preds_stp[1:nrow(SVM_stp$val_predicted), i], use = "pairwise.complete.obs")
-  # train_corr_PBR[i] <- cor(PBR_train_phenotype, train_preds_PBR[1:nrow(SVM_PBR$train_predicted), i], use = "pairwise.complete.obs")
-  # test_corr_PBR[i] <- cor(PBR_test_phenotype, test_preds_PBR[1:nrow(SVM_PBR$val_predicted), i], use = "pairwise.complete.obs")
-  # train_corr_PNZ[i] <- cor(PNZ_train_phenotype, train_preds_PNZ[1:nrow(SVM_PNZ$train_predicted), i], use = "pairwise.complete.obs")
-  # test_corr_PNZ[i] <- cor(PNZ_test_phenotype, test_preds_PNZ[1:nrow(SVM_PNZ$val_predicted), i], use = "pairwise.complete.obs")
-  # train_corr_sol_Mo[i] <- cor(sol_Mo_train_phenotype, train_preds_sol_Mo[1:nrow(SVM_sol_Mo$train_predicted), i], use = "pairwise.complete.obs")
-  # test_corr_sol_Mo[i] <- cor(sol_Mo_test_phenotype, test_preds_sol_Mo[1:nrow(SVM_sol_Mo$val_predicted), i], use = "pairwise.complete.obs")
+  train_corr_stp[i] <- cor(stp_train_phenotype, train_preds_stp[1:nrow(RRb_stp$train_predicted), i], use = "pairwise.complete.obs")
+  test_corr_stp[i] <- cor(stp_test_phenotype, test_preds_stp[1:nrow(RRb_stp$val_predicted), i], use = "pairwise.complete.obs")
+  # train_corr_PBR[i] <- cor(PBR_train_phenotype, train_preds_PBR[1:nrow(RRb_PBR$train_predicted), i], use = "pairwise.complete.obs")
+  # test_corr_PBR[i] <- cor(PBR_test_phenotype, test_preds_PBR[1:nrow(RRb_PBR$val_predicted), i], use = "pairwise.complete.obs")
+  # train_corr_PNZ[i] <- cor(PNZ_train_phenotype, train_preds_PNZ[1:nrow(RRb_PNZ$train_predicted), i], use = "pairwise.complete.obs")
+  # test_corr_PNZ[i] <- cor(PNZ_test_phenotype, test_preds_PNZ[1:nrow(RRb_PNZ$val_predicted), i], use = "pairwise.complete.obs")
+  # train_corr_sol_Mo[i] <- cor(sol_Mo_train_phenotype, train_preds_sol_Mo[1:nrow(RRb_sol_Mo$train_predicted), i], use = "pairwise.complete.obs")
+  # test_corr_sol_Mo[i] <- cor(sol_Mo_test_phenotype, test_preds_sol_Mo[1:nrow(RRb_sol_Mo$val_predicted), i], use = "pairwise.complete.obs")
   # 
   # Initialize empty matrices to store the test predictions for each phenotype
   stp_pred_matrix <- matrix(NA, nrow = nrow(stp), 1)
@@ -180,10 +180,10 @@ for (i in 1:num_iter) {
   # sol_Mo_pred_matrix <- matrix(NA, nrow = nrow(sol_Mo), 1)
   # 
   # Fill the matrices with the test predictions based on the test indices
-  stp_pred_matrix[stp_test, 1] <- SVM_stp$val_predicted
-  # PBR_pred_matrix[PBR_test, 1] <- SVM_PBR$val_predicted
-  # PNZ_pred_matrix[PNZ_test, 1] <- SVM_PNZ$val_predicted
-  # sol_Mo_pred_matrix[sol_Mo_test, 1] <- SVM_sol_Mo$val_predicted
+  stp_pred_matrix[stp_test, 1] <- RRb_stp$val_predicted
+  # PBR_pred_matrix[PBR_test, 1] <- RRb_PBR$val_predicted
+  # PNZ_pred_matrix[PNZ_test, 1] <- RRb_PNZ$val_predicted
+  # sol_Mo_pred_matrix[sol_Mo_test, 1] <- RRb_sol_Mo$val_predicted
   # 
   # Store the filled matrices in the respective lists
   test_preds_stp_list[[i]] <- stp_pred_matrix

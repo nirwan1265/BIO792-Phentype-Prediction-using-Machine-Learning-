@@ -14,15 +14,16 @@ xgb_func <- function(train_pheno, train_geno, test_geno, nrounds = 1000, eta = 0
   )
   
   # Predict the phenotypes for training and test data
-  train_pred <- predict(xgb_model, train_geno)
-  test_pred <- predict(xgb_model, test_geno)
+  train_predicted <- predict(xgb_model, train_geno)
+  val_predicted <- predict(xgb_model, test_geno)
   
   # Return predicted values and model object
-  return_value <- list("train_predicted" = train_pred, "test_predicted" = test_pred, "model" = xgb_model)
+  return_value <- list("train_predicted" = train_predicted, "test_predicted" = test_predicted, "model" = xgb_model)
   return(return_value)
 }
+test_predicted <- predict(xgb_sol_Mo, as.matrix(sol_Mo_test_marker))
 
-
+class(sol_Mo_test_marker)
 # sol_VL
 xgb_sol_VL <- xgb_func(sol_VL_train_phenotype, sol_VL_train_marker, sol_VL_test_marker)
 

@@ -1,33 +1,48 @@
-RF_func = function (train_pheno, train_geno, test_geno, check){
+RF_func = function(train_pheno, train_geno, test_geno){
   train_geno = (train_geno + 1) / 3
   test_geno = (test_geno + 1) / 3
-  set.seed(200)
-  if (check == "FM"){
-    train_RF = randomForest::randomForest(x = train_geno, y = train_pheno, verbose=FALSE, mtry=round(dim(train_geno)[1]/3), ntree=200, metric="RMSE", maxnodes=NULL)
-  } else {
-    train_RF = randomForest::randomForest(x = train_geno, y = train_pheno, verbose=FALSE, mtry=round(dim(train_geno)[1]), ntree=100, metric="RMSE", maxnodes=NULL)
-  }
-  train_pred <- predict(train_RF, newdata = train_geno)
-  val_pred <- predict(train_RF, newdata = test_geno)
-  return_value = list("val_predicted"=val_pred, "train_predicted"=train_pred, "model"=train_RF)
+  train_RF = randomForest::randomForest(x = train_geno, y = train_pheno, verbose=FALSE, 
+                                        mtry=round(dim(train_geno)[1]/3), ntree=200, 
+                                        metric="RMSE", maxnodes=NULL)
+  train_predicted <- predict(train_RF, newdata = train_geno)
+  val_predicted <- predict(train_RF, newdata = test_geno)
+  return_value = list("val_predicted"=val_predicted, "train_predicted"=train_predicted, "model"=train_RF)
   return(return_value)
 }
+typeof(sol_Mo_test_marker)
+class(sol_Mo_test_marker)
+dim(sol_Mo_test_marker)
+val_predicted <- predict(RF_sol_Mo, newdata = sol_Mo_test_marker)
 
-# sol_VL
-RF_sol_VL <- RF_func(sol_VL_train_phenotype, sol_VL_train_marker, sol_VL_test_marker, "FM")
+# RF_func = function (train_pheno, train_geno, test_geno, check){
+#   train_geno = (train_geno + 1) / 3
+#   test_geno = (test_geno + 1) / 3
+#   if (check == "FM"){
+#     train_RF = randomForest::randomForest(x = train_geno, y = train_pheno, verbose=FALSE, mtry=round(dim(train_geno)[1]/3), ntree=200, metric="RMSE", maxnodes=NULL)
+#   } else {
+#     train_RF = randomForest::randomForest(x = train_geno, y = train_pheno, verbose=FALSE, mtry=round(dim(train_geno)[1]), ntree=100, metric="RMSE", maxnodes=NULL)
+#   }
+#   train_predicted <- predict(train_RF, newdata = train_geno)
+#   val_predicted <- predict(train_RF, newdata = test_geno)
+#   return_value = list("val_predicted"=val_predicted, "train_predicted"=train_predicted, "model"=train_RF)
+#   return(return_value)
+# }
 
-test_predicted <- RF_sol_VL$val_predicted
-train_predicted <- RF_sol_VL$train_predicted
+# sol_Mo
+RF_sol_Mo <- RF_func(sol_Mo_train_phenotype, sol_Mo_train_marker, sol_Mo_test_marker)
 
-cor(sol_VL_train_phenotype,train_predicted)
-cor(sol_VL_test_phenotype, test_predicted)
+test_predicted <- RF_sol_Mo$val_predicted
+train_predicted <- RF_sol_Mo$train_predicted
+
+cor(sol_Mo_train_phenotype,train_predicted)
+cor(sol_Mo_test_phenotype, test_predicted)
 
 summary(test_predicted)
 summary(train_predicted)
 
 
 
-sol_VL_train_test_RF <- cbind(sol_VL_test_phenotype, test_predicted)
+sol_Mo_train_test_RF <- cbind(sol_Mo_test_phenotype, test_predicted)
 
 
 RF_lab <- RF_func(lab_train_phenotype, lab_train_marker, lab_test_marker, "FM")
