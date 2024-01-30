@@ -21,7 +21,8 @@ library(xgboost)
 #path_to_python <- install_python()
 #Note that if you already have Python installed, you don’t need to call install_python() and instead can just supply an absolute path to the Python executable.
 virtualenv_create("r-reticulate", python = path_to_python)
-
+#in hpc server
+#virtualenv_create("r-reticulate", python="/usr/local/usrapps/maize/ntanduk/prediction/bin/python3")
 #install.packages("tensorflow")
 
 
